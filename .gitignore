@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env
+.venv/
+
+# Packages
+*.egg-info/
+dist/
+build/
+
+# Pytest
+.pytest_cache/
+
+# IDEs
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Model artifacts and large data
+models/
+data/*.pkl

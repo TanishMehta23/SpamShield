@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SpamShield</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="icon" href="{{ url_for('static', filename='favicon.webp') }}" type="image/svg+xml">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="page-shell">
+        <div class="ambient ambient-left"></div>
+        <div class="ambient ambient-right"></div>
+
+        <main class="container">
+            <section class="hero-panel">
+                <div class="brand-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    SpamShield
+                </div>
+
+                <h1>Spot suspicious messages before they get attention.</h1>
+
+                <p class="subtitle">
+                    Paste an SMS or chat snippet and let the model classify it with a fast, clean signal.
+                </p>
+
+                <div class="hero-points">
+                    <div class="point">
+                        <span class="point-icon"><i class="fa-solid fa-bolt"></i></span>
+                        <div>
+                            <strong>Instant analysis</strong>
+                            <p>Get a prediction in one pass.</p>
+                        </div>
+                    </div>
+                    <div class="point">
+                        <span class="point-icon"><i class="fa-solid fa-chart-line"></i></span>
+                        <div>
+                            <strong>Model-backed confidence</strong>
+                            <p>See how strongly the model leans.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="workspace-panel">
+                <form class="analyzer-card" action="/predict" method="POST">
+                    <div class="card-header">
+                        <div>
+                            <p class="eyebrow">Message scanner</p>
+                            <h2>Analyze a message</h2>
+                        </div>
+                        <span class="status-pill">Ready</span>
+                    </div>
+
+                    <label class="field-label" for="message">Message text</label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        placeholder="Type or paste your SMS here..."
+                        required>{{message if message else ""}}</textarea>
+
+                    <div class="field-meta">
+                        <div class="counter">
+                            <span id="count">0</span>
+                            characters
+                        </div>
+                        <p class="hint">Tip: short promotional texts and link-heavy messages are the best test cases.</p>
+                    </div>
+
+                    <div class="buttons">
+                        <button class="predict" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Analyze message
+                        </button>
+
+                        <button class="clear" type="button" data-clear-message>
+                            <i class="fa-solid fa-eraser"></i>
+                            Clear
+                        </button>
+                    </div>
+                </form>
+
+                {% if prediction %}
+                <div class="result">
+                    {% if prediction=="Spam" %}
+                    <article class="result-card result-spam">
+                        <div class="result-copy">
+                            <span class="result-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                            <div>
+                                <p class="eyebrow">Outcome</p>
+                                <h2>Spam detected</h2>
+                            </div>
+                        </div>
+                        <p>This message appears to be spam. Review the sender before responding.</p>
+
+                        {% if confidence %}
+                        <div class="confidence-row">
+                            <span>Confidence</span>
+                            <strong>{{confidence}}%</strong>
+                        </div>
+                        {% endif %}
+                    </article>
+                    {% else %}
+                    <article class="result-card result-safe">
+                        <div class="result-copy">
+                            <span class="result-icon"><i class="fa-solid fa-circle-check"></i></span>
+                            <div>
+                                <p class="eyebrow">Outcome</p>
+                                <h2>Looks safe</h2>
+                            </div>
+                        </div>
+                        <p>This message does not appear to be spam.</p>
+
+                        {% if confidence %}
+                        <div class="confidence-row">
+                            <span>Confidence</span>
+                            <strong>{{confidence}}%</strong>
+                        </div>
+                        {% endif %}
+                    </article>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="info">
+                    <div class="card">
+                        <h3>Model</h3>
+                        <p>Multinomial Naive Bayes</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Accuracy</h3>
+                        <p>97.20%</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Precision</h3>
+                        <p>100%</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
