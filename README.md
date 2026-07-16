@@ -47,12 +47,24 @@ python app.py
 - [src/train.py](src/train.py) — training script (if available)
 - [templates/index.html](templates/index.html) — front-end template
 - [static/](static/) — CSS, JS, favicon
-- [models/](models/) — serialized model artifacts (recommended to keep out of VCS)
-- [data/spam.csv](data/spam.csv) — example dataset (if present)
+- [models/](models/) — serialized model artifacts 
+- [data/spam.csv](data/spam.csv) — example dataset 
+- [models/](models/) — serialized model artifacts
+   - `models/model.pkl` — trained scikit-learn classifier (pickle format). The app loads this on startup.
+   - `models/vectorizer.pkl` — fitted text vectorizer (e.g., `CountVectorizer` or `TfidfVectorizer`) used to transform incoming text before prediction.
 
-**Notes**
-- The app loads `models/model.pkl` and `models/vectorizer.pkl` on startup. If you retrain the model, update these files.
-- Add sensitive config (API keys, secrets) to a `.env` file and never commit it.
+If you retrain the model, overwrite these two files in the `models/` folder. A simple training script is available at `src/train.py` which demonstrates fitting a vectorizer and a classifier, then saving artifacts with `joblib`.
+
+Example (train + save):
+```bash
+python src/train.py
+```
+
+**Screenshot**
+Below is a preview of the app UI. Save your screenshot to `static/screenshot.png` to display it here:
+
+![SpamShield UI screenshot](static/screenshot.png)
+
 
 **Contributing**
 Contributions are welcome. Please open issues or pull requests with clear descriptions and tests when relevant.
