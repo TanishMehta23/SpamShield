@@ -28,6 +28,5 @@ Thumbs.db
 # Logs
 *.log
 
-# Model artifacts and large data
-models/
+Large data
 data/*.pkl
