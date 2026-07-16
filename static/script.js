@@ -23,34 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		updateCounter();
 	}
 
-	if (resultSection && pageShell && window.matchMedia("(max-width: 980px)").matches) {
-		const docScroller = document.scrollingElement || document.documentElement;
-
-		const getActiveScroller = () => {
-			if (pageShell.scrollHeight > pageShell.clientHeight + 2) {
-				return pageShell;
-			}
-
-			return docScroller;
-		};
-
+	if (resultSection && window.matchMedia("(max-width: 980px)").matches) {
 		const scrollToResult = (smooth) => {
-			const scroller = getActiveScroller();
-			const isDocumentScroller = scroller === docScroller;
-			const scrollerTop = isDocumentScroller ? 0 : scroller.getBoundingClientRect().top;
-			const currentTop = isDocumentScroller ? window.scrollY : scroller.scrollTop;
-			const resultTop = resultSection.getBoundingClientRect().top;
-			const targetTop = Math.max(0, resultTop - scrollerTop + currentTop - 8);
-
-			if (isDocumentScroller) {
-				window.scrollTo({
-					top: targetTop,
-					behavior: smooth ? "smooth" : "auto",
-				});
-				return;
-			}
-
-			scroller.scrollTo({
+			const rect = resultSection.getBoundingClientRect();
+			const targetTop = window.scrollY + rect.top - 16;
+			window.scrollTo({
 				top: targetTop,
 				behavior: smooth ? "smooth" : "auto",
 			});

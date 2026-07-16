@@ -19,6 +19,11 @@
 	box-sizing: border-box;
 }
 
+html,
+body {
+	overflow-x: hidden;
+}
+
 body {
 	min-height: 100dvh;
 	font-family: "Manrope", system-ui, sans-serif;
@@ -42,8 +47,6 @@ body::before {
 .page-shell {
 	position: relative;
 	min-height: 100dvh;
-	overflow-x: hidden;
-	overflow-y: auto;
 	padding: 16px;
 }
 
