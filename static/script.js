@@ -22,34 +22,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		updateCounter();
 	}
-
-	if (resultSection && window.matchMedia("(max-width: 980px)").matches) {
-		const scrollToResult = (smooth) => {
-			const rect = resultSection.getBoundingClientRect();
-			const targetTop = window.scrollY + rect.top - 16;
-			window.scrollTo({
-				top: targetTop,
-				behavior: smooth ? "smooth" : "auto",
-			});
-		};
-
-		let attempts = 0;
-		const maxAttempts = 5;
-
-		const runScrollPass = () => {
-			attempts += 1;
-			scrollToResult(attempts === 1);
-
-			const rect = resultSection.getBoundingClientRect();
-			const closeToTop = rect.top >= 0 && rect.top <= 80;
-
-			if (!closeToTop && attempts < maxAttempts) {
-				setTimeout(runScrollPass, 140);
-			}
-		};
-
-		requestAnimationFrame(() => {
-			setTimeout(runScrollPass, 60);
-		});
-	}
 });
