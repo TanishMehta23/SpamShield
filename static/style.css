@@ -41,8 +41,9 @@ body::before {
 
 .page-shell {
 	position: relative;
-	height: 100dvh;
-	overflow: hidden;
+	min-height: 100dvh;
+	overflow-x: hidden;
+	overflow-y: auto;
 	padding: 16px;
 }
 
@@ -77,7 +78,7 @@ body::before {
 	grid-template-columns: 1.05fr 1.25fr;
 	gap: 16px;
 	align-items: stretch;
-	height: 100%;
+	min-height: 100%;
 }
 
 .hero-panel,
@@ -425,10 +426,6 @@ button:hover {
 
 	.hero-panel h1 {
 		max-width: 14ch;
-	}
-
-	.page-shell {
-		overflow: hidden;
 	}
 }
 
