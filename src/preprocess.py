@@ -1,6 +1,10 @@
+import nltk
 import string
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+
+# Download the required NLTK corpus if it's not already available
+nltk.download("stopwords", quiet=True)
 
 ps = PorterStemmer()
 stop_words = set(stopwords.words("english"))
