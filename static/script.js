@@ -24,15 +24,55 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	if (resultSection && pageShell && window.matchMedia("(max-width: 980px)").matches) {
-		requestAnimationFrame(() => {
-			const shellTop = pageShell.getBoundingClientRect().top;
-			const resultTop = resultSection.getBoundingClientRect().top;
-			const offsetTop = resultTop - shellTop + pageShell.scrollTop - 8;
+		const docScroller = document.scrollingElement || document.documentElement;
 
-			pageShell.scrollTo({
-				top: Math.max(0, offsetTop),
-				behavior: "smooth",
+		const getActiveScroller = () => {
+			if (pageShell.scrollHeight > pageShell.clientHeight + 2) {
+				return pageShell;
+			}
+
+			return docScroller;
+		};
+
+		const scrollToResult = (smooth) => {
+			const scroller = getActiveScroller();
+			const isDocumentScroller = scroller === docScroller;
+			const scrollerTop = isDocumentScroller ? 0 : scroller.getBoundingClientRect().top;
+			const currentTop = isDocumentScroller ? window.scrollY : scroller.scrollTop;
+			const resultTop = resultSection.getBoundingClientRect().top;
+			const targetTop = Math.max(0, resultTop - scrollerTop + currentTop - 8);
+
+			if (isDocumentScroller) {
+				window.scrollTo({
+					top: targetTop,
+					behavior: smooth ? "smooth" : "auto",
+				});
+				return;
+			}
+
+			scroller.scrollTo({
+				top: targetTop,
+				behavior: smooth ? "smooth" : "auto",
 			});
+		};
+
+		let attempts = 0;
+		const maxAttempts = 5;
+
+		const runScrollPass = () => {
+			attempts += 1;
+			scrollToResult(attempts === 1);
+
+			const rect = resultSection.getBoundingClientRect();
+			const closeToTop = rect.top >= 0 && rect.top <= 80;
+
+			if (!closeToTop && attempts < maxAttempts) {
+				setTimeout(runScrollPass, 140);
+			}
+		};
+
+		requestAnimationFrame(() => {
+			setTimeout(runScrollPass, 60);
 		});
 	}
 });
